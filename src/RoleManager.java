@@ -12,6 +12,6 @@ public class RoleManager {
                 return true;  // User is an admin
             }
         }
-        return false;
+        return false;  // User is not an admin
     }
 }
