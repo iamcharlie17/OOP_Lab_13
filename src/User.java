@@ -1,386 +1,97 @@
-/*
- * This class is intended to be the main class for this Project. All necessary methods are getting calls from this class.
- *
- *
- */
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.Random;
 
-public class User {
+public class RandomGenerator {
 
-    // ************************************************************ Fields
-    // ************************************************************
+    //        ************************************************************ Fields ************************************************************
 
-    /*
-     * 2D Array to store admin credentials. Default credentials are stored on [0][0]
-     * index. Max num of admins can be 10....
-     */
-    static String[][] adminUserNameAndPassword = new String[10][2];
-    private static List<Customer> customersCollection = new ArrayList<>();
+    private String randomNum;
+    /*  City name is at the 0-index, its latitude is on the 1-index and longitude on the 2-index*/
+    private static final String[][] destinations = {
+            {"Karachi", "24.871940", "66.988060"}, {"Bangkok", "13.921430", "100.595337"}, {"Jakarta", "-6.174760", "106.827072"},
+            {"Islamabad", "33.607587", "73.100316"}, {"New York City", "40.642422", "-73.781749"}, {"Lahore", "31.521139", "74.406519"},
+            {"Gilgit Baltistan", "35.919108", "74.332838"}, {"Jeddah", "21.683647", "39.152862"}, {"Riyadh", "24.977080", "46.688942"}, {"New Delhi", "28.555764", "77.096520"},
+            {"Hong Kong", "22.285005", "114.158339"}, {"Beijing", "40.052121", "116.609609"}, {"Tokyo", "35.550899", "139.780683"}, {"Kuala Lumpur", "2.749914", "101.707160"},
+            {"Sydney", "-33.942028", "151.174304"}, {"Melbourne", "-37.671812", "144.846079"}, {"Cape Town", "-33.968879", "18.596982"}, {"Madrid", "40.476938", "-3.569428"},
+            {"Dublin", "53.424077", "-6.256792"}, {"Johannesburg", "25.936834", "27.925890"}, {"London", "51.504473", "0.052271"}, {"Los Angeles", "33.942912", "-118.406829"},
+            {"Brisbane", "-27.388925", "153.116751"}, {"Amsterdam", "52.308100", "4.764170"}, {"Stockholm", "59.651236", "17.924793"}, {"Frankfurt", "50.050085", "8.571911"},
+            {"New Taipei City", "25.066471", "121.551638"}, {"Rio de Janeiro", "-22.812160", "-43.248636"}, {"Seoul", "37.558773", "126.802822"}, {"Yokohama", "35.462819", "139.637008"},
+            {"Ankara", "39.951898", "32.688792"}, {"Casablanca", "33.368202", "-7.580998"}, {"Shenzhen", "22.633977", "113.809360"}, {"Baghdad", "33.264824", "44.232014"},
+            {"Alexandria", "40.232302", "-85.637150"}, {"Pune", "18.579019", "73.908572"}, {"Shanghai", "31.145326", "121.804512"}, {"Istanbul", "41.289143", "41.261401", "28.742376"},
+            {"Bhutan", "22.648322", "88.443152"}, {"Dhaka", "23.847177", "90.404133"}, {"Munich", "48.354327", "11.788680"}, {"Perth", "56.435749", "-3.371675"},
+            {"Mexico", "21.038103", "-86.875259"}, {"California", "32.733089", "-117.194514"}, {"Kabul", "34.564296", "69.211574"}, {"Yangon", "47.604505", "-122.330604"},
+            {"Lagos", "17.981829", "102.565684"}, {"Santiago", "-33.394795", "-70.790183"}, {"Kuwait", "29.239250", "47.971575"}, {"Nairobi", "39.958361", "41.174310"},
+            {"Tehran", "35.696000", "51.401000"}, {"Saint Petersburg", "60.013492", "29.722189"}, {"Hanoi", "21.219185", "105.803967"}, {"Sialkot", "32.328361", "74.215310"},
+            {"Berlin", "52.554316", "13.291213"}, {"Paris", "48.999560", "2.539274"}, {"Dubai", "25.249869", "55.366483"}
+    };
 
-    // ************************************************************
-    // Behaviours/Methods
-    // ************************************************************
-
-    public static void main(String[] args) {
-        int countNumOfUsers = 1;
-        RolesAndPermissions r1 = new RolesAndPermissions();
-        Flight f1 = new Flight();
-        FlightReservation bookingAndReserving = new FlightReservation();
-        Customer c1 = new Customer();
-        f1.flightScheduler();
-        Scanner read = new Scanner(System.in);
+    //        ************************************************************ Behaviours/Methods ************************************************************
 
 
-        System.out.println(
-                "\n\t\t\t\t\t+++++++++++++ Welcome to BAV AirLines +++++++++++++\n\nTo Further Proceed, Please enter a value.");
-        System.out.println(
-                "\n***** Default Username && Password is root-root ***** Using Default Credentials will restrict you to just view the list of Passengers....\n");
-        displayMainMenu();
-        int desiredOption = read.nextInt();
-        while (desiredOption < 0 || desiredOption > 8) {
-            System.out.print("ERROR!! Please enter value between 0 - 4. Enter the value again :\t");
-            desiredOption = read.nextInt();
+    /* Generates Random ID for the Customers....*/
+    public String randomIDGen() {
+        Random rand = new Random();
+        String randomID = Integer.toString(rand.nextInt(1000000));
+
+        while (Integer.parseInt(randomID) < 20000) {
+            randomID = Integer.toString(rand.nextInt(1000000));
         }
-
-        do {
-            Scanner read1 = new Scanner(System.in);
-            /*
-             * If desiredOption is 1 then call the login method.... if default credentials
-             * are used then set the permission
-             * level to standard/default where the user can just view the customer's
-             * data...if not found, then return -1, and if
-             * data is found then show the user display menu for adding, updating, deleting
-             * and searching users/customers...
-             */
-            if (desiredOption == 1) {
-
-                /* Default username and password.... */
-                adminUserNameAndPassword[0][0] = "root";
-                adminUserNameAndPassword[0][1] = "root";
-
-                System.out.print("\nEnter the UserName to login to the Management System :     ");
-                String username = read1.nextLine();
-                System.out.print("Enter the Password to login to the Management System :    ");
-                String password = read1.nextLine();
-                System.out.println();
-
-                /* Checking the RolesAndPermissions...... */
-                if (r1.isPrivilegedUserOrNot(username, password) == -1) {
-                    System.out.printf(
-                            "\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n",
-                            "");
-                } else if (r1.isPrivilegedUserOrNot(username, password) == 0) {
-                    System.out.println(
-                            "You've standard/default privileges to access the data... You can just view customers data..."
-                                    + "Can't perform any actions on them....");
-                    c1.displayCustomersData(true);
-                } else {
-                    System.out.printf(
-                            "%-20sLogged in Successfully as \"%s\"..... For further Proceedings, enter a value from below....",
-                            "", username);
-
-                    /*
-                     * Going to Display the CRUD operations to be performed by the privileged
-                     * user.....Which includes Creating, Updating
-                     * Reading(Searching) and deleting a customer....
-                     */
-                    do {
-                        System.out.printf("\n\n%-60s+++++++++ 2nd Layer Menu +++++++++%50sLogged in as \"%s\"\n", "",
-                                "", username);
-                        System.out.printf("%-30s (a) Enter 1 to add new Passenger....\n", "");
-                        System.out.printf("%-30s (b) Enter 2 to search a Passenger....\n", "");
-                        System.out.printf("%-30s (c) Enter 3 to update the Data of the Passenger....\n", "");
-                        System.out.printf("%-30s (d) Enter 4 to delete a Passenger....\n", "");
-                        System.out.printf("%-30s (e) Enter 5 to Display all Passengers....\n", "");
-                        System.out.printf("%-30s (f) Enter 6 to Display all flights registered by a Passenger...\n",
-                                "");
-                        System.out.printf("%-30s (g) Enter 7 to Display all registered Passengers in a Flight....\n",
-                                "");
-                        System.out.printf("%-30s (h) Enter 8 to Delete a Flight....\n", "");
-                        System.out.printf("%-30s (i) Enter 0 to Go back to the Main Menu/Logout....\n", "");
-                        System.out.print("Enter the desired Choice :   ");
-                        desiredOption = read.nextInt();
-                        /* If 1 is entered by the privileged user, then add a new customer...... */
-                        if (desiredOption == 1) {
-
-                            c1.addNewCustomer();
-                        } else if (desiredOption == 2) {
-                            /*
-                             * If 2 is entered by the privileged user, then call the search method of the
-                             * Customer class
-                             */
-
-                            c1.displayCustomersData(false);
-                            System.out.print("Enter the CustomerID to Search :\t");
-                            String customerID = read1.nextLine();
-                            System.out.println();
-                            c1.searchUser(customerID);
-                        } else if (desiredOption == 3) {
-                            /*
-                             * If 3 is entered by the user, then call the update method of the Customer
-                             * Class with required
-                             * arguments.....
-                             */
-
-                            c1.displayCustomersData(false);
-                            System.out.print("Enter the CustomerID to Update its Data :\t");
-                            String customerID = read1.nextLine();
-                            if (customersCollection.size() > 0) {
-                                c1.editUserInfo(customerID);
-                            } else {
-                                System.out.printf("%-50sNo Customer with the ID %s Found...!!!\n", " ", customerID);
-                            }
-
-                        } else if (desiredOption == 4) {
-                            /*
-                             * If 4 is entered, then ask the user to enter the customer id, and then delete
-                             * that customer....
-                             */
-                            c1.displayCustomersData(false);
-                            System.out.print("Enter the CustomerID to Delete its Data :\t");
-                            String customerID = read1.nextLine();
-                            if (customersCollection.size() > 0) {
-                                c1.deleteUser(customerID);
-                            } else {
-                                System.out.printf("%-50sNo Customer with the ID %s Found...!!!\n", " ", customerID);
-                            }
-                        } else if (desiredOption == 5) {
-                            /* Call the Display Method of Customer Class.... */
-                            c1.displayCustomersData(false);
-                        } else if (desiredOption == 6) {
-                            c1.displayCustomersData(false);
-                            System.out.print(
-                                    "\n\nEnter the ID of the user to display all flights registered by that user...");
-                            String id = read1.nextLine();
-                            bookingAndReserving.displayFlightsRegisteredByOneUser(id);
-                        } else if (desiredOption == 7) {
-                            System.out.print(
-                                    "Do you want to display Passengers of all flights or a specific flight.... 'Y/y' for displaying all flights and 'N/n' to look for a"
-                                            +
-                                            " specific flight.... ");
-                            char choice = read1.nextLine().charAt(0);
-                            if ('y' == choice || 'Y' == choice) {
-                                bookingAndReserving.displayRegisteredUsersForAllFlight();
-                            } else if ('n' == choice || 'N' == choice) {
-                                f1.displayFlightSchedule();
-                                System.out.print(
-                                        "Enter the Flight Number to display the list of passengers registered in that flight... ");
-                                String flightNum = read1.nextLine();
-                                bookingAndReserving.displayRegisteredUsersForASpecificFlight(flightNum);
-                            } else {
-                                System.out.println("Invalid Choice...No Response...!");
-                            }
-                        } else if (desiredOption == 8) {
-                            f1.displayFlightSchedule();
-                            System.out.print("Enter the Flight Number to delete the flight : ");
-                            String flightNum = read1.nextLine();
-                            f1.deleteFlight(flightNum);
-
-                        } else if (desiredOption == 0) {
-                            ;
-                            System.out.println("Thanks for Using BAV Airlines Ticketing System...!!!");
-
-                        } else {
-                            System.out.println(
-                                    "Invalid Choice...Looks like you're Robot...Entering values randomly...You've Have to login again...");
-
-                            desiredOption = 0;
-                        }
-
-                    } while (desiredOption != 0);
-
-                }
-            } else if (desiredOption == 2) {
-                /*
-                 * If desiredOption is 2, then call the registration method to register a
-                 * user......
-                 */
-                System.out.print("\nEnter the UserName to Register :    ");
-                String username = read1.nextLine();
-                System.out.print("Enter the Password to Register :     ");
-                String password = read1.nextLine();
-                while (r1.isPrivilegedUserOrNot(username, password) != -1) {
-                    System.out.print("ERROR!!! Admin with same UserName already exist. Enter new UserName:   ");
-                    username = read1.nextLine();
-                    System.out.print("Enter the Password Again:   ");
-                    password = read1.nextLine();
-                }
-
-                /* Setting the credentials entered by the user..... */
-                adminUserNameAndPassword[countNumOfUsers][0] = username;
-                adminUserNameAndPassword[countNumOfUsers][1] = password;
-
-                /* Incrementing the numOfUsers */
-                countNumOfUsers++;
-            } else if (desiredOption == 3) {
-                System.out.print("\n\nEnter the Email to Login : \t");
-                String userName = read1.nextLine();
-                System.out.print("Enter the Password : \t");
-                String password = read1.nextLine();
-                String[] result = r1.isPassengerRegistered(userName, password).split("-");
-
-                if (Integer.parseInt(result[0]) == 1) {
-                    int desiredChoice;
-                    System.out.printf(
-                            "\n\n%-20sLogged in Successfully as \"%s\"..... For further Proceedings, enter a value from below....",
-                            "", userName);
-                    do {
-                        System.out.printf("\n\n%-60s+++++++++ 3rd Layer Menu +++++++++%50sLogged in as \"%s\"\n", "",
-                                "", userName);
-                        System.out.printf("%-40s (a) Enter 1 to Book a flight....\n", "");
-                        System.out.printf("%-40s (b) Enter 2 to update your Data....\n", "");
-                        System.out.printf("%-40s (c) Enter 3 to delete your account....\n", "");
-                        System.out.printf("%-40s (d) Enter 4 to Display Flight Schedule....\n", "");
-                        System.out.printf("%-40s (e) Enter 5 to Cancel a Flight....\n", "");
-                        System.out.printf("%-40s (f) Enter 6 to Display all flights registered by \"%s\"....\n", "",
-                                userName);
-                        System.out.printf("%-40s (g) Enter 0 to Go back to the Main Menu/Logout....\n", "");
-                        System.out.print("Enter the desired Choice :   ");
-                        desiredChoice = read.nextInt();
-                        if (desiredChoice == 1) {
-                            // bookingAndReserving.displayArtWork(1);
-                            f1.displayFlightSchedule();
-                            System.out.print("\nEnter the desired flight number to book :\t ");
-                            String flightToBeBooked = read1.nextLine();
-                            System.out.print("Enter the Number of tickets for " + flightToBeBooked + " flight :   ");
-                            int numOfTickets = read.nextInt();
-                            while (numOfTickets > 10) {
-                                System.out.print(
-                                        "ERROR!! You can't book more than 10 tickets at a time for single flight....Enter number of tickets again : ");
-                                numOfTickets = read.nextInt();
-                            }
-                            bookingAndReserving.bookFlight(flightToBeBooked, numOfTickets, result[1]);
-                        } else if (desiredChoice == 2) {
-
-                            c1.editUserInfo(result[1]);
-                        } else if (desiredChoice == 3) {
-                            System.out.print(
-                                    "Are you sure to delete your account...It's an irreversible action...Enter Y/y to confirm...");
-                            char confirmationChar = read1.nextLine().charAt(0);
-                            if (confirmationChar == 'Y' || confirmationChar == 'y') {
-                                c1.deleteUser(result[1]);
-                                System.out.printf("User %s's account deleted Successfully...!!!", userName);
-                                desiredChoice = 0;
-                            } else {
-                                System.out.println("Action has been cancelled...");
-                            }
-                        } else if (desiredChoice == 4) {
-
-                            f1.displayFlightSchedule();
-                            f1.displayMeasurementInstructions();
-                        } else if (desiredChoice == 5) {
-
-                            bookingAndReserving.cancelFlight(result[1]);
-                        } else if (desiredChoice == 6) {
-
-                            bookingAndReserving.displayFlightsRegisteredByOneUser(result[1]);
-                        } else {
-
-                            if (desiredChoice != 0) {
-                                System.out.println(
-                                        "Invalid Choice...Looks like you're Robot...Entering values randomly...You've Have to login again...");
-                            }
-                            desiredChoice = 0;
-                        }
-                    } while (desiredChoice != 0);
-
-                } else {
-                    System.out.printf(
-                            "\n%20sERROR!!! Unable to login Cannot find user with the entered credentials.... Try Creating New Credentials or get yourself register by pressing 4....\n",
-                            "");
-                }
-            } else if (desiredOption == 4) {
-
-                c1.addNewCustomer();
-            } else if (desiredOption == 5) {
-                manualInstructions();
-            }
-
-            displayMainMenu();
-            desiredOption = read1.nextInt();
-            while (desiredOption < 0 || desiredOption > 8) {
-                System.out.print("ERROR!! Please enter value between 0 - 4. Enter the value again :\t");
-                desiredOption = read1.nextInt();
-            }
-        } while (desiredOption != 0);
+        setRandomNum(randomID);
 
     }
 
-    static void displayMainMenu() {
-        System.out.println("\n\n\t\t(a) Press 0 to Exit.");
-        System.out.println("\t\t(b) Press 1 to Login as admin.");
-        System.out.println("\t\t(c) Press 2 to Register as admin.");
-        System.out.println("\t\t(d) Press 3 to Login as Passenger.");
-        System.out.println("\t\t(e) Press 4 to Register as Passenger.");
-        System.out.println("\t\t(f) Press 5 to Display the User Manual.");
-        System.out.print("\t\tEnter the desired option:    ");
+    /*This method sets the destinations for each of the flights from the above destinations randomly.....*/
+    public String[][] randomDestinations() {
+        Random rand = new Random();
+        int randomCity1 = rand.nextInt(destinations.length);
+        int randomCity2 = rand.nextInt(destinations.length);
+        String fromWhichCity = destinations[randomCity1][0];
+        String fromWhichCityLat = destinations[randomCity1][1];
+        String fromWhichCityLong = destinations[randomCity1][2];
+        while (randomCity2 == randomCity1) {
+            randomCity2 = rand.nextInt(destinations.length);
+        }
+        String toWhichCity = destinations[randomCity2][0];
+        String toWhichCityLat = destinations[randomCity2][1];
+        String toWhichCityLong = destinations[randomCity2][2];
+        String[][] chosenDestinations = new String[2][3];
+        chosenDestinations[0][0] = fromWhichCity;
+        chosenDestinations[0][1] = fromWhichCityLat;
+        chosenDestinations[0][2] = fromWhichCityLong;
+        chosenDestinations[1][0] = toWhichCity;
+        chosenDestinations[1][1] = toWhichCityLat;
+        chosenDestinations[1][2] = toWhichCityLong;
+        return chosenDestinations;
     }
 
-    static void manualInstructions() {
-        Scanner read = new Scanner(System.in);
-        System.out.printf("%n%n%50s %s Welcome to BAV Airlines User Manual %s", "", "+++++++++++++++++",
-                "+++++++++++++++++");
-        System.out.println("\n\n\t\t(a) Press 1 to display Admin Manual.");
-        System.out.println("\t\t(b) Press 2 to display User Manual.");
-        System.out.print("\nEnter the desired option :    ");
-        int choice = read.nextInt();
-        while (choice < 1 || choice > 2) {
-            System.out.print("ERROR!!! Invalid entry...Please enter a value either 1 or 2....Enter again....");
-            choice = read.nextInt();
+    /*Generates the Random Number of Seats for each flight*/
+    public int randomNumOfSeats() {
+        Random random = new Random();
+        int numOfSeats = random.nextInt(500);
+        while (numOfSeats < 75) {
+            numOfSeats = random.nextInt(500);
         }
-        if (choice == 1) {
-            System.out.println(
-                    "\n\n(1) Admin have the access to all users data...Admin can delete, update, add and can perform search for any customer...\n");
-            System.out.println(
-                    "(2) In order to access the admin module, you've to get yourself register by pressing 2, when the main menu gets displayed...\n");
-            System.out.println(
-                    "(3) Provide the required details i.e., name, email, id...Once you've registered yourself, press 1 to login as an admin... \n");
-            System.out.println(
-                    "(4) Once you've logged in, 2nd layer menu will be displayed on the screen...From here on, you can select from variety of options...\n");
-            System.out.println(
-                    "(5) Pressing \"1\" will add a new Passenger, provide the program with required details to add the passenger...\n");
-            System.out.println(
-                    "(6) Pressing \"2\" will search for any passenger, given the admin(you) provides the ID from the table printing above....  \n");
-            System.out.println(
-                    "(7) Pressing \"3\" will let you update any passengers data given the user ID provided to program...\n");
-            System.out.println("(8) Pressing \"4\" will let you delete any passenger given its ID provided...\n");
-            System.out.println("(9) Pressing \"5\" will let you display all registered passenger...\n");
-            System.out.println(
-                    "(10) Pressing \"6\" will let you display all registered passengers...After selecting, program will ask, if you want to display passengers for all flights(Y/y) or a specific flight(N/n)\n");
-            System.out.println(
-                    "(11) Pressing \"7\" will let you delete any flight given its flight number provided...\n");
-            System.out.println(
-                    "(11) Pressing \"0\" will make you logged out of the program...You can login again any time you want during the program execution....\n");
-        } else {
-            System.out.println(
-                    "\n\n(1) Local user has the access to its data only...He/She won't be able to change/update other users data...\n");
-            System.out.println(
-                    "(2) In order to access local users benefits, you've to get yourself register by pressing 4, when the main menu gets displayed...\n");
-            System.out.println(
-                    "(3) Provide the details asked by the program to add you to the users list...Once you've registered yourself, press \"3\" to login as a passenger...\n");
-            System.out.println(
-                    "(4) Once you've logged in, 3rd layer menu will be displayed...From here on, you embarked on the journey to fly with us...\n");
-            System.out.println(
-                    "(5) Pressing \"1\" will display available/scheduled list of flights...To get yourself booked for a flight, enter the flight number and number of tickets for the flight...Max num of tickets at a time is 10 ...\n");
-            System.out.println(
-                    "(7) Pressing \"2\" will let you update your own data...You won't be able to update other's data... \n");
-            System.out.println("(8) Pressing \"3\" will delete your account... \n");
-            System.out
-                    .println("(9) Pressing \"4\" will display randomly designed flight schedule for this runtime...\n");
-            System.out.println("(10) Pressing \"5\" will let you cancel any flight registered by you...\n");
-            System.out.println("(11) Pressing \"6\" will display all flights registered by you...\n");
-            System.out.println(
-                    "(12) Pressing \"0\" will make you logout of the program...You can login back at anytime with your credentials...for this particular run-time... \n");
-        }
+        return numOfSeats;
     }
 
-    // ************************************************************ Setters &
-    // Getters ************************************************************
+    /*Generates the Unique Flight Number....*/
+    public String randomFlightNumbGen(int uptoHowManyLettersRequired, int divisible) {
+        Random random = new Random();
+        StringBuilder randomAlphabets = new StringBuilder();
+        for (int i = 0; i < uptoHowManyLettersRequired; i++) {
+            randomAlphabets.append((char) (random.nextInt(26) + 'a'));
+        }
+        randomAlphabets.append("-").append(randomNumOfSeats() / divisible);
+        return randomAlphabets.toString();
+    }
 
-    public static List<Customer> getCustomersCollection() {
-        return customersCollection;
+    //        ************************************************************ Setters & Getters ************************************************************
+
+    public void setRandomNum(String randomNum) {
+        this.randomNum = randomNum;
+    }
+
+    public String getRandomNumber() {
+        return randomNum;
     }
 }
