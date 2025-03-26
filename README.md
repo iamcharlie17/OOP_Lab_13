@@ -7,19 +7,23 @@
 - seperate the classes to maintain SOLID specially SRP
 
 ## list of refactoring done
-- create pacakge for the classes 
+- create pacakge for the classes
 
 #### Customer class related refacoring
 - seperate customer validation from Customer class(into CustomerValidator class)
 - update the customer class.remove direct validation logic from customer constructor.
-- remove flight related methods to seperate class for SRP. create FlightManager for those logics. 
-- update the addNewCustomer method for the new structure. 
+- remove flight related methods to seperate class for SRP. create FlightManager for those logics.
+- update the addNewCustomer method for the new structure.
 
 #### Flight class related refactoring
 - move scheduling and distance logic from Flight class. (FlightScheduler class)
-- update FlightReservation class to use BookingManager 
+- update FlightReservation class to use BookingManager
 - create a FlightRepository to store flight related data
+- updated FlightManager to handle addFlight and booking/cancelling flight logic.
 
 #### RolesAndPermissions class related refactoing
 - seperate RolesAndPermissions classes into RoleManager and PermissionManager
 - refactor RolesAndPermissions to use RoleManager and PermissionManager
+
+#### Remaining refactor to ensure the behavour is unchagned
+- add the print statements for same user interface
