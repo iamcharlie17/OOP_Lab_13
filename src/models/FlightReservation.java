@@ -48,7 +48,7 @@ public class FlightReservation implements DisplayClass {
                             customer.addNewFlightToCustomerList(f1);
                             addNumberOfTicketsForNewFlight(customer, numOfTickets);
                         }
-                    break;
+                        break;
                     }
                 }
             }

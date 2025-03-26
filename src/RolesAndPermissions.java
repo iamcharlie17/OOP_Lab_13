@@ -1,3 +1,6 @@
+import models.Customer;
+import models.User;
+
 public class RolesAndPermissions extends User {
     //        ************************************************************ Behaviours/Methods ************************************************************
 

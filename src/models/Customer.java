@@ -190,7 +190,7 @@ public class Customer {
 
     /**
      * Shows the customers' data in formatted way.
-     * 
+     *
      * @param showHeader to check if we want to print ascii art for the customers'
      *                   data.
      */
@@ -260,7 +260,7 @@ public class Customer {
 
     /**
      * Adds numOfTickets to already booked flights
-     * 
+     *
      * @param index        at which flight is registered in the arraylist
      * @param numOfTickets how many tickets to add
      */

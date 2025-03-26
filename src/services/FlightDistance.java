@@ -1,3 +1,5 @@
+package services;
+
 public abstract class FlightDistance {
     public abstract String toString(int i);
 

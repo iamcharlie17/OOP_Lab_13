@@ -1,3 +1,6 @@
+import models.Customer;
+import models.Flight;
+
 import java.util.List;
 
 public interface DisplayClass {
